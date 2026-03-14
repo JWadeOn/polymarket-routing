@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Equinox — Architecture Diagram</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #1F4E79;
+    --blue:    #2E75B6;
+    --teal:    #17748A;
+    --coral:   #C04B2E;
+    --purple:  #534AB7;
+    --green:   #1E6B4A;
+    --amber:   #7B4F00;
+    --gray:    #444441;
+    --light:   #F8F9FB;
+    --border:  #C8D0DC;
+    --text:    #1A1A1A;
+    --muted:   #555555;
+    --bg:      #FFFFFF;
+    --card-bg: #F4F7FB;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --light:   #1A2130;
+      --border:  #2A3545;
+      --text:    #E2E8F0;
+      --muted:   #8899AA;
+      --bg:      #111827;
+      --card-bg: #1A2433;
+      --navy:    #5B9BD5;
+      --blue:    #74AEDE;
+    }
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px 24px 48px;
+    min-height: 100vh;
+  }
+
+  header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+  }
+
+  header p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .diagram-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  svg text { font-family: 'Segoe UI', system-ui, sans-serif; }
+
+  /* color ramp classes for SVG — light + dark */
+  .c-blue   rect, .c-blue   circle { fill: #E6F1FB; stroke: #185FA5; }
+  .c-teal   rect, .c-teal   circle { fill: #E1F5EE; stroke: #0F6E56; }
+  .c-purple rect, .c-purple circle { fill: #EEEDFE; stroke: #534AB7; }
+  .c-coral  rect, .c-coral  circle { fill: #FAECE7; stroke: #993C1D; }
+  .c-amber  rect, .c-amber  circle { fill: #FAEEDA; stroke: #854F0B; }
+  .c-green  rect, .c-green  circle { fill: #EAF3DE; stroke: #3B6D11; }
+  .c-gray   rect, .c-gray   circle { fill: #F1EFE8; stroke: #5F5E5A; }
+
+  .c-blue   .th { fill: #0C447C; }
+  .c-blue   .ts { fill: #185FA5; }
+  .c-teal   .th { fill: #085041; }
+  .c-teal   .ts { fill: #0F6E56; }
+  .c-purple .th { fill: #3C3489; }
+  .c-purple .ts { fill: #534AB7; }
+  .c-coral  .th { fill: #712B13; }
+  .c-coral  .ts { fill: #993C1D; }
+  .c-amber  .th { fill: #633806; }
+  .c-amber  .ts { fill: #854F0B; }
+  .c-green  .th { fill: #27500A; }
+  .c-green  .ts { fill: #3B6D11; }
+  .c-gray   .th { fill: #444441; }
+  .c-gray   .ts { fill: #5F5E5A; }
+
+  @media (prefers-color-scheme: dark) {
+    .c-blue   rect, .c-blue   circle { fill: #0C447C; stroke: #85B7EB; }
+    .c-teal   rect, .c-teal   circle { fill: #085041; stroke: #5DCAA5; }
+    .c-purple rect, .c-purple circle { fill: #3C3489; stroke: #AFA9EC; }
+    .c-coral  rect, .c-coral  circle { fill: #712B13; stroke: #F0997B; }
+    .c-amber  rect, .c-amber  circle { fill: #633806; stroke: #EF9F27; }
+    .c-green  rect, .c-green  circle { fill: #27500A; stroke: #97C459; }
+    .c-gray   rect, .c-gray   circle { fill: #444441; stroke: #B4B2A9; }
+
+    .c-blue   .th { fill: #B5D4F4; }
+    .c-blue   .ts { fill: #85B7EB; }
+    .c-teal   .th { fill: #9FE1CB; }
+    .c-teal   .ts { fill: #5DCAA5; }
+    .c-purple .th { fill: #CECBF6; }
+    .c-purple .ts { fill: #AFA9EC; }
+    .c-coral  .th { fill: #F5C4B3; }
+    .c-coral  .ts { fill: #F0997B; }
+    .c-amber  .th { fill: #FAC775; }
+    .c-amber  .ts { fill: #EF9F27; }
+    .c-green  .th { fill: #C0DD97; }
+    .c-green  .ts { fill: #97C459; }
+    .c-gray   .th { fill: #D3D1C7; }
+    .c-gray   .ts { fill: #B4B2A9; }
+  }
+
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; font-weight: 400; }
+
+  .arr {
+    stroke: var(--border);
+    stroke-width: 1.5;
+    fill: none;
+  }
+  .arr-line {
+    stroke: var(--border);
+    stroke-width: 1.5;
+    fill: none;
+  }
+  .leader {
+    stroke: var(--border);
+    stroke-width: 0.5;
+    stroke-dasharray: 3 3;
+    fill: none;
+  }
+
+  .node { cursor: pointer; }
+  .node:hover rect { opacity: 0.85; }
+
+  .container-rect {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 0.5;
+    stroke-dasharray: 5 4;
+  }
+  .container-label { font-size: 11px; fill: var(--muted); font-family: 'Segoe UI', sans-serif; }
+
+  .step-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    fill: var(--muted);
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  footer {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Project Equinox — System Architecture</h1>
+  <p>Cross-venue prediction market aggregation &amp; routing simulation · Go 1.21+ · March 2026</p>
+</header>
+
+<div class="diagram-wrap">
+<svg width="100%" viewBox="0 0 680 920" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ── External APIs ──────────────────────────────── -->
+<text class="step-label" x="340" y="22" text-anchor="middle">External APIs</text>
+
+<g class="node c-blue">
+  <rect x="60" y="30" width="200" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="160" y="52" text-anchor="middle" dominant-baseline="central">Polymarket</text>
+  <text class="ts" x="160" y="70" text-anchor="middle" dominant-baseline="central">Gamma API + CLOB API</text>
+</g>
+
+<g class="node c-blue">
+  <rect x="420" y="30" width="200" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="520" y="52" text-anchor="middle" dominant-baseline="central">Kalshi</text>
+  <text class="ts" x="520" y="70" text-anchor="middle" dominant-baseline="central">REST API v2</text>
+</g>
+
+<!-- arrows: APIs → Connectors -->
+<line x1="160" y1="86" x2="160" y2="148" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+<line x1="520" y1="86" x2="520" y2="148" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- ── Connector Layer ──────────────────────────── -->
+<text class="step-label" x="340" y="142" text-anchor="middle">Connector layer — VenueConnector interface</text>
+
+<g class="node c-teal">
+  <rect x="60" y="150" width="200" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="160" y="172" text-anchor="middle" dominant-baseline="central">PolymarketConnector</text>
+  <text class="ts" x="160" y="190" text-anchor="middle" dominant-baseline="central">Fetch · normalize · sort asks</text>
+</g>
+
+<g class="node c-teal">
+  <rect x="420" y="150" width="200" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="520" y="172" text-anchor="middle" dominant-baseline="central">KalshiConnector</text>
+  <text class="ts" x="520" y="190" text-anchor="middle" dominant-baseline="central">Fetch · normalize · sort asks</text>
+</g>
+
+<!-- interface badge -->
+<rect x="272" y="160" width="136" height="36" rx="6" class="container-rect"/>
+<text class="container-label" x="340" y="176" text-anchor="middle">VenueConnector</text>
+<text class="container-label" x="340" y="190" text-anchor="middle">interface</text>
+
+<!-- arrows: Connectors → Model -->
+<line x1="160" y1="206" x2="240" y2="268" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+<line x1="520" y1="206" x2="440" y2="268" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- ── Canonical Model ──────────────────────────── -->
+<text class="step-label" x="340" y="260" text-anchor="middle">Canonical model</text>
+
+<g class="node c-purple">
+  <rect x="150" y="268" width="380" height="66" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="292" text-anchor="middle" dominant-baseline="central">NormalizedMarket</text>
+  <text class="ts" x="340" y="312" text-anchor="middle" dominant-baseline="central">VenueID · title · TitleNorm · yes/no price · asks[]</text>
+  <text class="ts" x="340" y="328" text-anchor="middle" dominant-baseline="central">total_depth_usd · category · resolution_time · fetched_at</text>
+</g>
+
+<!-- config badge (right side) -->
+<rect x="554" y="276" width="96" height="50" rx="6" class="container-rect"/>
+<text class="container-label" x="602" y="296" text-anchor="middle">config.go</text>
+<text class="container-label" x="602" y="310" text-anchor="middle">all constants</text>
+<text class="container-label" x="602" y="322" text-anchor="middle">+ weights</text>
+<line x1="554" y1="301" x2="532" y2="301" class="leader"/>
+
+<!-- arrow: Model → Matching -->
+<line x1="340" y1="334" x2="340" y2="388" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- ── Matching Layer ───────────────────────────── -->
+<rect x="70" y="388" width="540" height="138" rx="12" class="container-rect"/>
+<text class="container-label" x="86" y="406">Matching layer  ·  internal/matching</text>
+
+<g class="node c-coral">
+  <rect x="88" y="416" width="148" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="162" y="438" text-anchor="middle" dominant-baseline="central">NormalizeTitle</text>
+  <text class="ts" x="162" y="456" text-anchor="middle" dominant-baseline="central">Aliases · stop words</text>
+</g>
+
+<g class="node c-coral">
+  <rect x="256" y="416" width="168" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="438" text-anchor="middle" dominant-baseline="central">ScorePair</text>
+  <text class="ts" x="340" y="456" text-anchor="middle" dominant-baseline="central">Jaccard · date · category</text>
+</g>
+
+<g class="node c-coral">
+  <rect x="444" y="416" width="148" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="518" y="438" text-anchor="middle" dominant-baseline="central">DetectInversion</text>
+  <text class="ts" x="518" y="456" text-anchor="middle" dominant-baseline="central">XOR negation tokens</text>
+</g>
+
+<!-- arrows inside matcher -->
+<line x1="236" y1="444" x2="254" y2="444" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+<line x1="424" y1="444" x2="442" y2="444" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- weights annotation -->
+<text class="container-label" x="340" y="498" text-anchor="middle">weights: title 0.60 · date 0.25 · category 0.15  →  confidence threshold ≥ 0.65</text>
+
+<!-- arrow: Matching → MatchResult -->
+<line x1="340" y1="526" x2="340" y2="564" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- ── MatchResult ──────────────────────────────── -->
+<text class="step-label" x="340" y="558" text-anchor="middle">Match result</text>
+
+<g class="node c-purple">
+  <rect x="150" y="566" width="380" height="66" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="590" text-anchor="middle" dominant-baseline="central">MatchResult</text>
+  <text class="ts" x="340" y="610" text-anchor="middle" dominant-baseline="central">Confidence · TitleScore · DateScore · CategoryScore</text>
+  <text class="ts" x="340" y="626" text-anchor="middle" dominant-baseline="central">IsPolarityInverted · Reasoning []string</text>
+</g>
+
+<!-- arrow: MatchResult → Routing -->
+<line x1="340" y1="632" x2="340" y2="676" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- ── Routing Layer ────────────────────────────── -->
+<rect x="70" y="676" width="540" height="154" rx="12" class="container-rect"/>
+<text class="container-label" x="86" y="694">Routing layer  ·  internal/routing  ·  Freshness &gt; Liquidity &gt; Slippage &gt; Cost</text>
+
+<!-- Step boxes -->
+<g class="node c-amber">
+  <rect x="88" y="704" width="112" height="52" rx="8" stroke-width="0.5"/>
+  <text class="th" x="144" y="726" text-anchor="middle" dominant-baseline="central">1 · Freshness</text>
+  <text class="ts" x="144" y="744" text-anchor="middle" dominant-baseline="central">60s TTL check</text>
+</g>
+
+<g class="node c-amber">
+  <rect x="220" y="704" width="112" height="52" rx="8" stroke-width="0.5"/>
+  <text class="th" x="276" y="726" text-anchor="middle" dominant-baseline="central">2 · Liquidity</text>
+  <text class="ts" x="276" y="744" text-anchor="middle" dominant-baseline="central">Depth floor</text>
+</g>
+
+<g class="node c-amber">
+  <rect x="352" y="704" width="112" height="52" rx="8" stroke-width="0.5"/>
+  <text class="th" x="408" y="726" text-anchor="middle" dominant-baseline="central">3 · Slippage</text>
+  <text class="ts" x="408" y="744" text-anchor="middle" dominant-baseline="central">5% ceiling</text>
+</g>
+
+<g class="node c-green">
+  <rect x="484" y="704" width="112" height="52" rx="8" stroke-width="0.5"/>
+  <text class="th" x="540" y="726" text-anchor="middle" dominant-baseline="central">4 · Cost</text>
+  <text class="ts" x="540" y="744" text-anchor="middle" dominant-baseline="central">Effective Price</text>
+</g>
+
+<!-- arrows between steps -->
+<line x1="200" y1="730" x2="218" y2="730" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+<line x1="332" y1="730" x2="350" y2="730" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+<line x1="464" y1="730" x2="482" y2="730" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- Fee Adapters row -->
+<g class="node c-gray">
+  <rect x="88" y="778" width="508" height="32" rx="6" stroke-width="0.5"/>
+  <text class="th" x="342" y="794" text-anchor="middle" dominant-baseline="central">FeeAdapter interface</text>
+  <text class="ts" x="342" y="808" text-anchor="middle" dominant-baseline="central">KalshiFeeAdapter: 0.07 × p × (1−p)  ·  PolymarketFeeAdapter: 1.56% peak + 0.1% floor</text>
+</g>
+
+<!-- arrow: Routing → Output -->
+<line x1="340" y1="830" x2="340" y2="870" class="arr-line" marker-end="url(#arrow)" stroke="var(--border)"/>
+
+<!-- ── Output ───────────────────────────────────── -->
+<text class="step-label" x="340" y="864" text-anchor="middle">Output</text>
+
+<g class="node c-green">
+  <rect x="130" y="872" width="420" height="36" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="890" text-anchor="middle" dominant-baseline="central">RoutingDecision → CLI reasoning log</text>
+</g>
+
+</svg>
+
+<div class="legend">
+  <span style="font-size:12px;color:var(--muted);font-weight:500;align-self:center">Layers:</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#E6F1FB;border-color:#185FA5"></span>External APIs</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#E1F5EE;border-color:#0F6E56"></span>Connectors</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#EEEDFE;border-color:#534AB7"></span>Canonical models</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#FAECE7;border-color:#993C1D"></span>Matching</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#FAEEDA;border-color:#854F0B"></span>Routing hierarchy</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#EAF3DE;border-color:#3B6D11"></span>Output</span>
+</div>
+</div>
+
+<footer>
+  Project Equinox · Final Technical Specification · Go 1.21+ · March 2026
+</footer>
+
+</body>
+</html>
