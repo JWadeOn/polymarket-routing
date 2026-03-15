@@ -3,6 +3,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -11,11 +12,32 @@ import (
 )
 
 func main() {
+	reportFlag := flag.Bool("report", false, "write a self-contained report.html after the simulation runs")
+	flag.Parse()
+
 	poly := connector.NewPolymarketConnector()
 	kalshi := connector.NewKalshiConnector()
 
-	if err := simulation.Run(poly, kalshi); err != nil {
-		fmt.Fprintf(os.Stderr, "equinox: %v\n", err)
-		os.Exit(1)
+	if *reportFlag {
+		decisions, matches, polyMarkets, kalshiMarkets, polyCount, kalshiCount, err := simulation.RunAndCollect(poly, kalshi)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "equinox: %v\n", err)
+			os.Exit(1)
+		}
+		htmlBytes, err := simulation.GenerateReport(decisions, matches, polyMarkets, kalshiMarkets, polyCount, kalshiCount)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "equinox: report: %v\n", err)
+			os.Exit(1)
+		}
+		if err := os.WriteFile("report.html", htmlBytes, 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "equinox: write report: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("Report written to report.html")
+	} else {
+		if err := simulation.Run(poly, kalshi); err != nil {
+			fmt.Fprintf(os.Stderr, "equinox: %v\n", err)
+			os.Exit(1)
+		}
 	}
 }

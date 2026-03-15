@@ -13,29 +13,53 @@ import (
 )
 
 const topN = 5
+const maxRoute = 18
 
 // Run fetches markets from both connectors, finds matched pairs,
 // simulates a $500 YES order on the top-5 by confidence, and prints
 // the reasoning log for each.
 func Run(poly connector.VenueConnector, kalshi connector.VenueConnector) error {
+	_, _, _, _, _, _, err := runCore(poly, kalshi)
+	return err
+}
+
+// RunAndCollect behaves identically to Run (same stdout output) but also returns
+// the routing decisions, all matched pairs sorted by confidence, the full market
+// lists for both venues, and market counts.
+// decisions[i] corresponds to matches[i] for i < len(decisions).
+func RunAndCollect(poly connector.VenueConnector, kalshi connector.VenueConnector) (
+	[]models.RoutingDecision, []models.MatchResult,
+	[]models.NormalizedMarket, []models.NormalizedMarket,
+	int, int, error,
+) {
+	return runCore(poly, kalshi)
+}
+
+func runCore(poly connector.VenueConnector, kalshi connector.VenueConnector) (
+	[]models.RoutingDecision, []models.MatchResult,
+	[]models.NormalizedMarket, []models.NormalizedMarket,
+	int, int, error,
+) {
 	polyMarkets, err := poly.FetchMarkets("")
 	if err != nil {
-		return fmt.Errorf("polymarket fetch: %w", err)
+		return nil, nil, nil, nil, 0, 0, fmt.Errorf("polymarket fetch: %w", err)
 	}
-	fmt.Printf("Fetched %d Polymarket markets\n", len(polyMarkets))
+	polyCount := len(polyMarkets)
+	fmt.Printf("Fetched %d Polymarket markets\n", polyCount)
 
 	kalshiMarkets, err := kalshi.FetchMarkets("")
 	if err != nil {
-		return fmt.Errorf("kalshi fetch: %w", err)
+		return nil, nil, nil, nil, 0, 0, fmt.Errorf("kalshi fetch: %w", err)
 	}
-	fmt.Printf("Fetched %d Kalshi markets\n", len(kalshiMarkets))
+	kalshiCount := len(kalshiMarkets)
+	fmt.Printf("Fetched %d Kalshi markets\n", kalshiCount)
 
 	matches := matching.FindMatches(polyMarkets, kalshiMarkets)
 	fmt.Printf("Found %d matched pairs (confidence ≥ %.2f)\n\n", len(matches), config.MatchConfidenceThreshold)
 
 	if len(matches) == 0 {
 		fmt.Println("No matched pairs found. Exiting.")
-		return nil
+		return nil, matches, polyMarkets, kalshiMarkets, polyCount, kalshiCount, nil
 	}
 
 	// Sort by confidence descending
@@ -43,13 +67,15 @@ func Run(poly connector.VenueConnector, kalshi connector.VenueConnector) error {
 		return matches[i].Confidence > matches[j].Confidence
 	})
 
-	// Take top N
-	top := matches
-	if len(top) > topN {
-		top = top[:topN]
+	// Route all matches up to maxRoute
+	routeEnd := len(matches)
+	if routeEnd > maxRoute {
+		routeEnd = maxRoute
 	}
 
-	for i, match := range top {
+	var decisions []models.RoutingDecision
+	for i := 0; i < routeEnd; i++ {
+		match := matches[i]
 		// Fetch orderbooks for both markets
 		if err := poly.FetchOrderbook(&match.MarketA); err != nil {
 			fmt.Printf("Warning: could not fetch Polymarket orderbook for %s: %v\n", match.MarketA.InternalID, err)
@@ -59,19 +85,26 @@ func Run(poly connector.VenueConnector, kalshi connector.VenueConnector) error {
 		}
 
 		decision := routing.Route(match)
+		decisions = append(decisions, decision)
 
-		fmt.Printf("\n[%d/%d]\n", i+1, len(top))
-		PrintReasoningLog(match, decision)
+		// Persist the orderbook-enriched match back into the slice so the report
+		// can access real ask levels for the non-selected venue recalculation.
+		matches[i] = match
+
+		if i < topN {
+			fmt.Printf("\n[%d/%d]\n", i+1, topN)
+			PrintReasoningLog(match, decision)
+		}
 	}
 
-	return nil
+	return decisions, matches, polyMarkets, kalshiMarkets, polyCount, kalshiCount, nil
 }
 
 // PrintReasoningLog emits the box-drawing character format from the spec.
 func PrintReasoningLog(match models.MatchResult, decision models.RoutingDecision) {
 	const (
-		heavy  = "═══════════════════════════════════════════════════════════════"
-		light  = "───────────────────────────────────────────────────────────────"
+		heavy = "═══════════════════════════════════════════════════════════════"
+		light = "───────────────────────────────────────────────────────────────"
 	)
 
 	fmt.Println(heavy)

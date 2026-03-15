@@ -1,0 +1,126 @@
+Fetched 346 Polymarket markets
+Fetched 386 Kalshi markets
+Found 18 matched pairs (confidence ≥ 0.65)
+
+
+[1/5]
+═══════════════════════════════════════════════════════════════
+  PROJECT EQUINOX — ROUTING DECISION
+═══════════════════════════════════════════════════════════════
+  Target Market : Fed emergency rate cut before 2027?
+  Standard Lot  : $500 USD (YES side)
+  Matched Pair  : Polymarket id=0x93a3b80b1fb485057add882b55d12011ea011fedd9abededad86ac6cb53a2802 ↔ Kalshi KXRATECUT-26DEC31
+  Confidence    : 0.86 (Title: 0.86, Date: 0.80, Category: 1.00)
+  Polarity      : Aligned (no inversion)
+───────────────────────────────────────────────────────────────
+  VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
+  POLYMARKET   —        —         —          $380440   EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $14419    FULL
+───────────────────────────────────────────────────────────────
+  ✓ ROUTE TO   : KALSHI
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.2776 > bestAsk+ceiling=0.2700)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$14419.00 status=FULL
+  ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
+  DATA AGE     : POLYMARKET 2s | KALSHI 1s
+  ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
+               : Kalshi fee_multiplier=0.07 (Series schema default)
+               : Order treated as single-execution (no slippage modeled beyond WAP)
+═══════════════════════════════════════════════════════════════
+
+[2/5]
+═══════════════════════════════════════════════════════════════
+  PROJECT EQUINOX — ROUTING DECISION
+═══════════════════════════════════════════════════════════════
+  Target Market : Will US GDP growth in Q1 2026 be greater than 3.5%?
+  Standard Lot  : $500 USD (YES side)
+  Matched Pair  : Polymarket id=0x05260e1c44dc94aadd963c29e0005618d4b9975db01f0883e01455c729a04cf1 ↔ Kalshi KXGDP-26APR30-T3.5
+  Confidence    : 0.70 (Title: 0.54, Date: 0.91, Category: 1.00)
+  Polarity      : Aligned (no inversion)
+───────────────────────────────────────────────────────────────
+  VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
+  POLYMARKET   —        —         —          $33587    EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $21238    FULL
+───────────────────────────────────────────────────────────────
+  ✓ ROUTE TO   : KALSHI
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.5480 > bestAsk+ceiling=0.3500)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$21238.00 status=FULL
+  ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
+  DATA AGE     : POLYMARKET 2s | KALSHI 2s
+  ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
+               : Kalshi fee_multiplier=0.07 (Series schema default)
+               : Order treated as single-execution (no slippage modeled beyond WAP)
+═══════════════════════════════════════════════════════════════
+
+[3/5]
+═══════════════════════════════════════════════════════════════
+  PROJECT EQUINOX — ROUTING DECISION
+═══════════════════════════════════════════════════════════════
+  Target Market : Will US GDP growth in Q1 2026 be less than 1.0%?
+  Standard Lot  : $500 USD (YES side)
+  Matched Pair  : Polymarket id=0xbf7d903a72d0450260093c13010a773f138ca61cfd3e9a7022ef058c255fb79a ↔ Kalshi KXGDP-26APR30-T1.0
+  Confidence    : 0.70 (Title: 0.54, Date: 0.91, Category: 1.00)
+  Polarity      : Aligned (no inversion)
+───────────────────────────────────────────────────────────────
+  VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
+  POLYMARKET   0.1910   0.0018    0.1929     $41376    FULL
+  KALSHI       0.0100   0.0000    0.0100     $23283    FULL
+───────────────────────────────────────────────────────────────
+  ✓ ROUTE TO   : KALSHI
+  ELIGIBLE POLYMARKET: WAP=0.1910 fee/ctr=0.0018 effPrice=0.1929 depth=$41376.33 status=FULL
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$23283.00 status=FULL
+  REASON: Lower Effective Price (0.0100 vs 0.1929). Fee offset analysis: KALSHI fee/ctr=0.0000 vs POLYMARKET fee/ctr=0.0018
+  SAVINGS: $0.1829/contract = $9142.73 on $500 lot
+  ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
+  DATA AGE     : KALSHI 2s | POLYMARKET 2s
+  ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
+               : Kalshi fee_multiplier=0.07 (Series schema default)
+               : Order treated as single-execution (no slippage modeled beyond WAP)
+═══════════════════════════════════════════════════════════════
+
+[4/5]
+═══════════════════════════════════════════════════════════════
+  PROJECT EQUINOX — ROUTING DECISION
+═══════════════════════════════════════════════════════════════
+  Target Market : Fed abolished before 2027?
+  Standard Lot  : $500 USD (YES side)
+  Matched Pair  : Polymarket id=0x014c25415332031ed85a2a9c7b5468c7d0f209e83f6a848c040907004604f563 ↔ Kalshi KXRATECUT-26DEC31
+  Confidence    : 0.69 (Title: 0.57, Date: 0.80, Category: 1.00)
+  Polarity      : INVERTED (Router uses 1.0 − Market_B.YesPrice)
+───────────────────────────────────────────────────────────────
+  VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
+  POLYMARKET   —        —         —          $31895    EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $14419    FULL
+───────────────────────────────────────────────────────────────
+  ✓ ROUTE TO   : KALSHI
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.5717 > bestAsk+ceiling=0.0800)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$14419.00 status=FULL
+  ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
+  DATA AGE     : POLYMARKET 3s | KALSHI 2s
+  ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
+               : Kalshi fee_multiplier=0.07 (Series schema default)
+               : Order treated as single-execution (no slippage modeled beyond WAP)
+═══════════════════════════════════════════════════════════════
+
+[5/5]
+═══════════════════════════════════════════════════════════════
+  PROJECT EQUINOX — ROUTING DECISION
+═══════════════════════════════════════════════════════════════
+  Target Market : Will US GDP growth in Q1 2026 be between 3.0% and 3.5%?
+  Standard Lot  : $500 USD (YES side)
+  Matched Pair  : Polymarket id=0x174f4f8447b716603444fc4df4ff9b0dfc3cb29ef74dfacb6cdee6ff98cbf54c ↔ Kalshi KXGDP-26APR30-T3.0
+  Confidence    : 0.68 (Title: 0.50, Date: 0.91, Category: 1.00)
+  Polarity      : Aligned (no inversion)
+───────────────────────────────────────────────────────────────
+  VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
+  POLYMARKET   —        —         —          $40042    EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $18717    FULL
+───────────────────────────────────────────────────────────────
+  ✓ ROUTE TO   : KALSHI
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.4738 > bestAsk+ceiling=0.2300)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$18717.00 status=FULL
+  ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
+  DATA AGE     : POLYMARKET 3s | KALSHI 2s
+  ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
+               : Kalshi fee_multiplier=0.07 (Series schema default)
+               : Order treated as single-execution (no slippage modeled beyond WAP)
+═══════════════════════════════════════════════════════════════
