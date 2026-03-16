@@ -1,5 +1,5 @@
-Fetched 346 Polymarket markets
-Fetched 386 Kalshi markets
+Fetched 345 Polymarket markets
+Fetched 396 Kalshi markets
 Found 18 matched pairs (confidence ≥ 0.65)
 
 
@@ -14,14 +14,16 @@ Found 18 matched pairs (confidence ≥ 0.65)
   Polarity      : Aligned (no inversion)
 ───────────────────────────────────────────────────────────────
   VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
-  POLYMARKET   —        —         —          $380440   EXCLUDED: SLIPPAGE_EXCEEDED
-  KALSHI       0.0100   0.0000    0.0100     $14419    FULL
+  POLYMARKET   0.2279   0.0025    0.2304     $385985   FULL
+  KALSHI       0.0100   0.0000    0.0100     $18607    FULL
 ───────────────────────────────────────────────────────────────
   ✓ ROUTE TO   : KALSHI
-  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.2776 > bestAsk+ceiling=0.2700)
-  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$14419.00 status=FULL
+  ELIGIBLE POLYMARKET: WAP=0.2279 fee/ctr=0.0025 effPrice=0.2304 depth=$385985.03 status=FULL
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$18607.00 status=FULL
+  REASON: Lower Effective Price (0.0100 vs 0.2304). Fee offset analysis: KALSHI fee/ctr=0.0000 vs POLYMARKET fee/ctr=0.0025
+  SAVINGS: $0.2204/contract = $11019.97 on $500 lot
   ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
-  DATA AGE     : POLYMARKET 2s | KALSHI 1s
+  DATA AGE     : POLYMARKET 2s | KALSHI 2s
   ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
                : Kalshi fee_multiplier=0.07 (Series schema default)
                : Order treated as single-execution (no slippage modeled beyond WAP)
@@ -38,12 +40,12 @@ Found 18 matched pairs (confidence ≥ 0.65)
   Polarity      : Aligned (no inversion)
 ───────────────────────────────────────────────────────────────
   VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
-  POLYMARKET   —        —         —          $33587    EXCLUDED: SLIPPAGE_EXCEEDED
-  KALSHI       0.0100   0.0000    0.0100     $21238    FULL
+  POLYMARKET   —        —         —          $37241    EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $21509    FULL
 ───────────────────────────────────────────────────────────────
   ✓ ROUTE TO   : KALSHI
-  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.5480 > bestAsk+ceiling=0.3500)
-  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$21238.00 status=FULL
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.3689 > bestAsk+ceiling=0.3600)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$21509.00 status=FULL
   ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
   DATA AGE     : POLYMARKET 2s | KALSHI 2s
   ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
@@ -62,16 +64,16 @@ Found 18 matched pairs (confidence ≥ 0.65)
   Polarity      : Aligned (no inversion)
 ───────────────────────────────────────────────────────────────
   VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
-  POLYMARKET   0.1910   0.0018    0.1929     $41376    FULL
-  KALSHI       0.0100   0.0000    0.0100     $23283    FULL
+  POLYMARKET   0.1899   0.0018    0.1917     $43632    FULL
+  KALSHI       0.0100   0.0000    0.0100     $21442    FULL
 ───────────────────────────────────────────────────────────────
   ✓ ROUTE TO   : KALSHI
-  ELIGIBLE POLYMARKET: WAP=0.1910 fee/ctr=0.0018 effPrice=0.1929 depth=$41376.33 status=FULL
-  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$23283.00 status=FULL
-  REASON: Lower Effective Price (0.0100 vs 0.1929). Fee offset analysis: KALSHI fee/ctr=0.0000 vs POLYMARKET fee/ctr=0.0018
-  SAVINGS: $0.1829/contract = $9142.73 on $500 lot
+  ELIGIBLE POLYMARKET: WAP=0.1899 fee/ctr=0.0018 effPrice=0.1917 depth=$43632.01 status=FULL
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$21442.00 status=FULL
+  REASON: Lower Effective Price (0.0100 vs 0.1917). Fee offset analysis: KALSHI fee/ctr=0.0000 vs POLYMARKET fee/ctr=0.0018
+  SAVINGS: $0.1817/contract = $9084.29 on $500 lot
   ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
-  DATA AGE     : KALSHI 2s | POLYMARKET 2s
+  DATA AGE     : POLYMARKET 2s | KALSHI 2s
   ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
                : Kalshi fee_multiplier=0.07 (Series schema default)
                : Order treated as single-execution (no slippage modeled beyond WAP)
@@ -88,12 +90,12 @@ Found 18 matched pairs (confidence ≥ 0.65)
   Polarity      : INVERTED (Router uses 1.0 − Market_B.YesPrice)
 ───────────────────────────────────────────────────────────────
   VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
-  POLYMARKET   —        —         —          $31895    EXCLUDED: SLIPPAGE_EXCEEDED
-  KALSHI       0.0100   0.0000    0.0100     $14419    FULL
+  POLYMARKET   —        —         —          $45679    EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $18607    FULL
 ───────────────────────────────────────────────────────────────
   ✓ ROUTE TO   : KALSHI
-  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.5717 > bestAsk+ceiling=0.0800)
-  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$14419.00 status=FULL
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.5550 > bestAsk+ceiling=0.0910)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$18607.00 status=FULL
   ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
   DATA AGE     : POLYMARKET 3s | KALSHI 2s
   ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
@@ -112,12 +114,12 @@ Found 18 matched pairs (confidence ≥ 0.65)
   Polarity      : Aligned (no inversion)
 ───────────────────────────────────────────────────────────────
   VENUE        WAP      FEE/CTR   EFF.PRICE  DEPTH     STATUS
-  POLYMARKET   —        —         —          $40042    EXCLUDED: SLIPPAGE_EXCEEDED
-  KALSHI       0.0100   0.0000    0.0100     $18717    FULL
+  POLYMARKET   —        —         —          $40213    EXCLUDED: SLIPPAGE_EXCEEDED
+  KALSHI       0.0100   0.0000    0.0100     $18610    FULL
 ───────────────────────────────────────────────────────────────
   ✓ ROUTE TO   : KALSHI
-  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.4738 > bestAsk+ceiling=0.2300)
-  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$18717.00 status=FULL
+  EXCLUDE POLYMARKET: SLIPPAGE_EXCEEDED (WAP=0.4922 > bestAsk+ceiling=0.2300)
+  ELIGIBLE KALSHI: WAP=0.0100 fee/ctr=0.0000 effPrice=0.0100 depth=$18610.00 status=FULL
   ASSUMPTION: fee_multiplier=0.07 sourced from Series schema default
   DATA AGE     : POLYMARKET 3s | KALSHI 2s
   ASSUMPTIONS  : Polymarket taker fee 1.56% peak (2026 US retail)
