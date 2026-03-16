@@ -70,21 +70,8 @@ func GenerateReport(
 		}
 	}
 
-	// Deduplicate matches: keep only the highest-confidence MatchResult per MarketA.InternalID
-	seen := make(map[string]models.MatchResult, len(matches))
-	for _, m := range matches {
-		key := m.MarketA.InternalID
-		if existing, ok := seen[key]; !ok || m.Confidence > existing.Confidence {
-			seen[key] = m
-		}
-	}
-	deduped := make([]models.MatchResult, 0, len(seen))
-	for _, m := range seen {
-		deduped = append(deduped, m)
-	}
-	sort.Slice(deduped, func(i, j int) bool {
-		return deduped[i].Confidence > deduped[j].Confidence
-	})
+	// matches is already deduplicated and sorted by confidence descending by FindMatches/runCore.
+	deduped := matches
 
 	// Pre-compute top-8 candidates per market for the Market Explorer (Section 0).
 	fmt.Printf("Pre-computing match candidates (%d×%d)...", len(polyMarkets), len(kalshiMarkets))

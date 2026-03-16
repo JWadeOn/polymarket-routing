@@ -5,6 +5,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jwadeon/equinox/internal/connector"
@@ -24,6 +25,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "equinox: %v\n", err)
 			os.Exit(1)
 		}
+		log.Printf("report: passing %d matches to GenerateReport()", len(matches))
 		htmlBytes, err := simulation.GenerateReport(decisions, matches, polyMarkets, kalshiMarkets, polyCount, kalshiCount)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "equinox: report: %v\n", err)
