@@ -4,14 +4,27 @@ Cross-venue prediction market aggregation and routing simulation. Finds equivale
 
 ---
 
+## Prerequisites
+
+- Go 1.26.1 or later ([download](https://go.dev/dl/))
+- Internet access (fetches live data from Polymarket and Kalshi public APIs)
+- No API keys required
+
+---
+
 ## Quick Start
 
 ```bash
 # Build
 go build ./...
 
-# Run simulation (fetches live API data)
+# Run simulation — prints top-5 routing decisions to stdout
+# (diagnostic logs go to stderr; suppress with 2>/dev/null)
 go run ./cmd/equinox
+
+# Generate a self-contained HTML report
+go run ./cmd/equinox --report
+# → writes report.html in the current directory
 
 # Run all tests (uses fixtures — no live API calls)
 go test ./...
@@ -118,7 +131,8 @@ All system policies live in [`internal/config/config.go`](internal/config/config
 - **No persistence.** Results are ephemeral unless redirected: `go run ./cmd/equinox > results.txt`.
 - **Polymarket CLOB orderbook** uses `condition_id` as a token ID fallback. Some markets return empty orderbooks; the router synthesizes a single-level book from `YesPrice` in those cases.
 
+---
 
+## Live Example
 
-empirical evidence that cross-venue normalization and routing infrastructure is viable:
-"On March 14 2026, the system identified a 62-percentage-point pricing divergence on 'Fed emergency rate cut before 2027' — Polymarket pricing YES at 21¢ vs Kalshi at 84¢ on the same binary outcome. The router correctly selected Polymarket as the lower effective price venue with 0.86 match confidence."
+On March 14, 2026, the system identified a 62-percentage-point pricing divergence on "Fed emergency rate cut before 2027" — Polymarket pricing YES at 21¢ vs Kalshi at 84¢ on the same binary outcome. The router correctly selected Polymarket as the lower effective price venue with 0.86 match confidence.
